@@ -2,3 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
+
+# files
+system_init.R
+
+# dir
+/Data
