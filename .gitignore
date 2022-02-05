@@ -7,4 +7,4 @@
 system_init.R
 
 # dir
-/Data
+data/
