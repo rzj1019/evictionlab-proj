@@ -15,7 +15,7 @@ webpath <- paste0("s3://",bucketname, "/")
 keynames<- c()
 
 # loop to grab key list
-for (i in 1:length(bucketdata)) {
+for (i in bucketdata %>% seq_along()) {
    key <- c(bucketdata[[i]][[1]])
    keynames <- c(keynames,key)
 }
