@@ -28,10 +28,10 @@ loadncheck.bucket <- function(key.name) {
    if(dir.length > 2) {
       dir.grep <- stringr::str_flatten(rep(".+/", times = length(dir.check)-1))
       dir.name <- stringr::str_extract(name, dir.grep)
-      file.name <- stringr::str_extract(name, "/.+")
+      file.name <- stringr::str_extract(name, "[^/]+$")
    } else {
       dir.name <- stringr::str_extract(name, ".+/")
-      file.name <- stringr::str_extract(name, "/.+")
+      file.name <- stringr::str_extract(name, "[^/]+$")
       }
 
    # Check file extension
@@ -69,7 +69,6 @@ loadncheck.bucket <- function(key.name) {
             message("-------------------------------------")
          }
       }
-
    } else{
       message(name, " not csv, moving to next file.")
       message("---------------------------------------")
@@ -77,3 +76,4 @@ loadncheck.bucket <- function(key.name) {
 
    return(name)
 }
+
