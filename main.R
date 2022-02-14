@@ -20,5 +20,10 @@ source("data_explore.R")
 
 #### Plots ####
 
-# generate eviction rates by state: year & county
-lapply(states.allcounties, evict.rate.state.county)
+# generate eviction rates by state: year & county with all.counties DT
+lapply(states.allcounties, evict.rate.state.county) %>% invisible()
+
+
+# plot median household income by year with poverty rate labels
+lapply(states.allcounties, poverty.median.val) %>% invisible()
+
