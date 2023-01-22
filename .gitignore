@@ -9,6 +9,5 @@ system_init.R
 # dir
 data/
 plots/
-docs/court-reported-stats docs/DATA_DICTIONARY.txt docs/demographics_analysis_20201030.R docs/demographics_analysis_20201123.R docs/Eviction_Lab_Methodology_Report_2022.pdf docs/expanded_rates_all.rda docs/External Validation 20210430.pdf docs/get_denominators_20201103.R
 docs/
 notes
