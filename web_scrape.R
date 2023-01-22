@@ -2,12 +2,6 @@
 # Web-scrapeEvictionlab.org and connec to AWS API
 #########################
 
-#### Web Scraping ####
-url <- read_html("https://data-downloads.evictionlab.org/")
-footer <- url %>% html_node(".app-footer") %>% html_text()
-mapanddata <- str_locate(footer, "Map and Data")
-
-
 #### AWS API:eviction-lab-data-downloads #####
 bucketname <- "eviction-lab-data-downloads"
 bucketdata <- aws.s3::get_bucket(bucketname)
