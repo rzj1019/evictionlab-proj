@@ -1,7 +1,7 @@
 ############################################
 # Main script to source files and define global variables
 ############################################
-rm(list = ls())
+rm(list = ls(all.names = TRUE))
 graphics.off()
 
 # Load packages and set directories
@@ -10,11 +10,17 @@ source("system_init.R")
 # Load users functions
 source("functions.R")
 
-# Pull and check data for updates; run as needed.
-source("web_scrape.R")
-
 # Load in E-Lab data from dir.
 source("data_explore.R")
+
+# Load data_completeness script
+source("data_completeness.R")
+
+# Load eda_candidates script
+source("eda_candidates.R")
+
+# Pull and check data for updates; run as needed.
+source("web_scrape.R")
 
 
 #### Plots ####
