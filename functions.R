@@ -79,21 +79,21 @@ loadncheck.bucket <- function(key.name) {
 
 
 # Data metadata ---------------------------------------------------------------------------------------------------------------------------------
-eviction_metadata <- function(level){
+eviction_metadata <- function(census.level){
 
-   # Initialize funtion and check args
-   level.list <- grep(paste0(".[A-Z].",level), ls(), value = TRUE)
-   if (level == "block.groups") {
+   # Initialize function and check args
+   level.list <- grep(paste0(".[A-Z].",census.level), ls(envir = .GlobalEnv), value = TRUE)
+   if (census.level == "block.groups") {
       level.census.count <- c(534,3438,2147,4178,23212,3532,2585,574,11442,5333,875,
                               2630,9691,4814,2351,3285,3471,4985,1086,8205,4111,4506,
                               842,6155,572,1633,1449,1836,15464,9238,2965,2634,9740,
                               815,3059,654,4125,15811,1690,5332,522,4783,4489,410)
-   } else if (level == "tracts") {
+   } else if (census.level == "tracts") {
       level.census.count <- c(167,1181,686,1526,8057,1249,833,218,4245,1969,351,
                               825,3123,1511,770,1115,1148,1478,358,2813,1338,1393,
                               271,2195,205,532,499,687,4919,2952,1046,834,3218,
                               244,1103,222,1497,5265,588,1907,184,1458,1409,132)
-   } else if (level == "counties") {
+   } else if (census.level == "counties") {
       level.census.count <- c(29,67,75,15,58,64,8,3,67,159,5,
                               99,102,92,105,120,64,14,16,83,87,115,
                               56,100,53,93,33,17,62,88,77,36,67,
@@ -102,6 +102,7 @@ eviction_metadata <- function(level){
       message("No Entered Level Matched.")
       stop()
    }
+
 
    # create columns
    level.abb <- c()
@@ -128,9 +129,9 @@ eviction_metadata <- function(level){
 
    for (n in seq_along(level.list)) {
 
-      name <- level.list[n]
-      abb <- stringr::str_sub(name,1,2)
-      table <- get(name)
+      t.name <- level.list[n]
+      abb <- stringr::str_sub(t.name,1,2)
+      table <- get(t.name)
 
       # Get Current State metadata
       l.count <- table[, name] %>% unique() %>% length()
@@ -176,33 +177,46 @@ eviction_metadata <- function(level){
       level.imputed.count <- append(level.imputed.count, i.count)
       level.subbed.count <- append(level.subbed.count, s.count)
       level.lowflag.count <- append(level.lowflag.count, lf.count)
-
    }
 
-   level.metadata <- data.table(state.abb = level.abb,
-                                level = level,
-                                level.count = level.count,
-                                year.count = level.year.count,
-                                row.count = level.row.count,
-                                census.level.count = level.census.count,
-                                row.projection = level.project.row,
-                                pct.level.coverage = level.coverage,
-                                pct.row.coverage = level.row.coverage,
-                                NAs.evict.rate = level.nas.evict.rate,
-                                NAs.evict.count = level.nas.evict.count,
-                                NAs.evict.filiings = level.nas.evict.filings,
-                                NAs.evict.filiing.rate = level.nas.evict.file.rate,
-                                NAs.evict.poverty.rate = level.nas.poverty.rate,
-                                NAs.evict.rent.burden = level.nas.rent.burd,
-                                NAs.evict.rent.occ.hh = level.nas.rent.occ.hh,
-                                NAs.evict.rent.pct.rent.occ = level.nas.pct.rent.occ,
-                                NAs.evict.med.gross.rent = level.nas.med.gross.rent,
-                                NAs.evict.med.hh.income = level.nas.med.hh.income,
-                                NAs.evict.med.prop.val = level.nas.med.prop.val,
-                                imputed.count = level.imputed.count,
-                                subbed.count = level.subbed.count,
-                                low.flag.count = level.lowflag.count)
-   return(level.metadata)
+   level.dt <- data.table(state.abb = level.abb,
+                          level = census.level,
+                          level.count = level.count,
+                          year.count = level.year.count,
+                          row.count = level.row.count,
+                          census.level.count = level.census.count,
+                          row.projection = level.project.row,
+                          pct.level.coverage = level.coverage,
+                          pct.row.coverage = level.row.coverage,
+                          NAs.evict.rate = level.nas.evict.rate,
+                          NAs.evict.count = level.nas.evict.count,
+                          NAs.evict.filiings = level.nas.evict.filings,
+                          NAs.evict.filiing.rate = level.nas.evict.file.rate,
+                          NAs.evict.poverty.rate = level.nas.poverty.rate,
+                          NAs.evict.rent.burden = level.nas.rent.burd,
+                          NAs.evict.rent.occ.hh = level.nas.rent.occ.hh,
+                          NAs.evict.rent.pct.rent.occ = level.nas.pct.rent.occ,
+                          NAs.evict.med.gross.rent = level.nas.med.gross.rent,
+                          NAs.evict.med.hh.income = level.nas.med.hh.income,
+                          NAs.evict.med.prop.val = level.nas.med.prop.val,
+                          imputed.count = level.imputed.count,
+                          subbed.count = level.subbed.count,
+                          low.flag.count = level.lowflag.count)
+
+   return(level.dt)
+}
 
 
+# Finding candidate missing years for each county -----------------------------------------------------------------------------------------------
+missing_data <- function(candidate){
+
+   table <- paste0(candidate,".counties") %>% get()
+   counties <- table[, name] %>% unique()
+   years <- table[, year] %>% sort() %>% unique()
+
+   all.combos <- expand.grid(name = counties, year = years)
+   table.combos <- table[, .(name,year)]
+
+   table.diff <- setdiff(all.combos, table.combos)
+   return(table.diff)
 }
