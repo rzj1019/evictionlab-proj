@@ -3,8 +3,15 @@
 ##########################
 
 #### Grab data from data.dir ####
-elab.files <- list.files(data.dir, recursive = TRUE)
-validated.elab.files <- elab.files[!grepl("legacy-data",elab.files)]
+elab.files <- grep("legacy-data/",
+                   list.files(path = data.dir, recursive = TRUE),
+                   invert = TRUE,
+                   value = TRUE)
+# on extracts county-level data
+if(Sys.info()["nodename"] == "penguin"){
+   elab.files <- grep("counties/", elab.files, value = TRUE)
+}
+
 # Make table for each elab file and put in state list if needed
 for(f in elab.files %>% seq_along()) {
    name <- stringr::str_extract(elab.files[f], "[^/]+(?=\\.)") %>% as.character()
