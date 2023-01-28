@@ -2,7 +2,19 @@
 # Main script to source files and define global variables
 ############################################
 rm(list = ls(all.names = TRUE))
+gc()
 graphics.off()
+
+#### check working directory and set if needed; set additional directories ####
+if(Sys.info()["sysname"] == "Linux"){
+   if(getwd() == "~/R/evictionlab-proj"){
+      message("Working directory not set appropriately. Changing working directory to: ")
+      message(getwd())
+   } else{
+      setwd("~/R/evictionlab-proj")
+      message("Working directory is: ", getwd())
+   }
+}
 
 # Load packages and set directories
 source("system_init.R")
