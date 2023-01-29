@@ -21,8 +21,6 @@ for(f in elab.files %>% seq_along()) {
    message("Created table: ", name)
 }
 
-
-
 ### Set variables needed####
 # Check column names for each type of file
 col.names <- c("GEOID", "year", "name", "parent.location", "population", "poverty.rate", "renter.occupied.households",

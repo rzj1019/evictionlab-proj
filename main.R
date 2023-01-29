@@ -7,11 +7,10 @@ graphics.off()
 
 #### check working directory and set if needed; set additional directories ####
 if(Sys.info()["sysname"] == "Linux"){
-   if(getwd() == "~/R/evictionlab-proj"){
-      message("Working directory not set appropriately. Changing working directory to: ")
-      message(getwd())
+   if(getwd() != normalizePath("~/R/evictionlab-proj")){
+      message("Changing working directory to: ", "~/R/evictionlab-proj")
+      setwd("~/R/evictionilab-proj")
    } else{
-      setwd("~/R/evictionlab-proj")
       message("Working directory is: ", getwd())
    }
 }
@@ -19,8 +18,12 @@ if(Sys.info()["sysname"] == "Linux"){
 # Load packages and set directories
 source("system_init.R")
 
-# Load users functions
-source("functions.R")
+# Load user-defined functions
+fxns <- list.files(fxn.dir)
+for (f in fxns %>% seq_along) {
+   fct <- paste0(fxn.dir,fxns[f])
+   source(fct)
+}
 
 # Load in E-Lab data from dir.
 source("data_explore.R")

@@ -15,4 +15,4 @@ for (i in bucketdata %>% seq_along()) {
 }
 
 # Run data pull and check
-lapply(keynames, loadncheck.bucket)
+lapply(keynames, loadncheck_bucket)
